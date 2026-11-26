@@ -5,9 +5,8 @@
 # --- 1. Build du frontend -------------------------------------------------------------
 FROM node:26-alpine AS frontend
 WORKDIR /build/frontend
-COPY frontend/package.json frontend/package-lock.json* ./
-# npm ci exige package-lock.json ; tant qu'il n'est pas versionné, on retombe sur npm install.
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
 COPY frontend/ ./
 RUN npm run build
 

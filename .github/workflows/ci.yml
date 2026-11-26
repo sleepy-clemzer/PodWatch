@@ -31,7 +31,7 @@ jobs:
           java-version: '25'
           cache: maven
       # Compilation + tests unitaires (surefire, *Test) + tests d'intégration Testcontainers (failsafe, *IT)
-      - run: mvn -B -ntp verify
+      - run: ./mvnw -B -ntp verify
       - name: Rapports de tests
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -53,20 +53,16 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '26'
-      - name: Installation des dépendances
-        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Installation des dépendances (versions figées par package-lock.json)
+        run: npm ci
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
       - name: Audit des dépendances (vulnérabilités critiques)
         run: npm audit --omit=dev --audit-level=critical
-      # Tant que package-lock.json n'est pas versionné, on publie celui généré par npm install pour pouvoir le committer.
-      - name: Publication du package-lock.json
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: frontend-package-lock
-          path: frontend/package-lock.json
 
   docker:
     name: Image Docker (build + scan)

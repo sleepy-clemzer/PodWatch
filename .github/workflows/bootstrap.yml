@@ -59,7 +59,9 @@ jobs:
           echo "--- /pods (route SPA)";     curl -fsS http://localhost:8080/pods | grep -q '<div id="root">' && echo OK
           code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/v1/clusters)
           echo "--- /api/v1/clusters → $code (attendu 403)"; test "$code" = "403"
-          echo "--- en-têtes de sécurité"; curl -sI http://localhost:8080/ | grep -iE 'content-security-policy|x-frame-options'
+          echo "--- en-têtes de /api/v1/system/info"; curl -s -D - -o /dev/null http://localhost:8080/api/v1/system/info
+          echo "--- en-têtes de /"; curl -s -D - -o /dev/null http://localhost:8080/
+          curl -s -D - -o /dev/null http://localhost:8080/ | grep -qi 'content-security-policy' || { echo "CSP absente sur /"; exit 1; }
 
       - name: Captures d'écran (Chromium headless)
         run: |

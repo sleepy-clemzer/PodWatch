@@ -1,0 +1,41 @@
+# Configuration commune à tous les environnements.
+# Aucune valeur sensible ici : les secrets sont fournis par variables d'environnement
+# (Secrets Kubernetes en déploiement, voir Phase 7).
+spring:
+  application:
+    name: podwatch
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: ${PODWATCH_DB_URL:jdbc:postgresql://localhost:5432/podwatch}
+    username: ${PODWATCH_DB_USER:podwatch}
+    password: ${PODWATCH_DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      # Le schéma est géré exclusivement par Flyway (src/main/resources/db/migration).
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  web:
+    resources:
+      # Le service des fichiers statiques (SPA) est géré par SpaWebConfig.
+      add-mappings: false
+
+server:
+  shutdown: graceful
+  error:
+    include-stacktrace: never
+    include-message: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never
+      probes:
+        enabled: true   # /actuator/health/liveness et /readiness pour Kubernetes

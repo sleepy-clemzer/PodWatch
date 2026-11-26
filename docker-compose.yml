@@ -1,0 +1,38 @@
+# Environnement de développement LOCAL uniquement.
+#   docker compose up -d            → PostgreSQL seul (cas courant : backend lancé depuis l'IDE ou Maven)
+#   docker compose --profile app up → PostgreSQL + image PodWatch complète (http://localhost:8080)
+#
+# Le mot de passe ci-dessous est une valeur de développement local, surchargeable via PODWATCH_DB_PASSWORD.
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: podwatch
+      POSTGRES_USER: podwatch
+      POSTGRES_PASSWORD: ${PODWATCH_DB_PASSWORD:-podwatch-local}
+    ports:
+      - "5432:5432"
+    volumes:
+      # À partir de PostgreSQL 18, l'image officielle attend le volume sur /var/lib/postgresql.
+      - podwatch-db:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U podwatch -d podwatch"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  podwatch:
+    profiles: ["app"]
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PODWATCH_DB_URL: jdbc:postgresql://postgres:5432/podwatch
+      PODWATCH_DB_USER: podwatch
+      PODWATCH_DB_PASSWORD: ${PODWATCH_DB_PASSWORD:-podwatch-local}
+    ports:
+      - "8080:8080"
+
+volumes:
+  podwatch-db:

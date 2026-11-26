@@ -1,0 +1,13 @@
+**/node_modules
+**/dist
+**/target
+**/.idea
+**/.vscode
+**/*.iml
+.git
+.github
+docs
+*.md
+!frontend/**/*.md
+.env
+.env.*

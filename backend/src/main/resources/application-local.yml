@@ -1,0 +1,10 @@
+# Profil de développement local : ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+# La base est fournie par docker-compose.yml (à la racine du repo).
+# Mot de passe de DÉVELOPPEMENT LOCAL uniquement, identique au défaut de docker-compose.yml.
+spring:
+  datasource:
+    password: ${PODWATCH_DB_PASSWORD:podwatch-local}
+
+logging:
+  level:
+    io.podwatch: DEBUG

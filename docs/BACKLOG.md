@@ -28,6 +28,9 @@
 
 ## E1 — Fondations (Phase 1)
 
+> **Statut : IN REVIEW** (PR Phase 1). Maven Wrapper et `package-lock.json` versionnés (générés par la CI). Écart assumé :
+> - **PW-106** : analyse des dépendances = Dependabot + `npm audit` + scan Trivy de l'image (qui couvre les jars embarqués). OWASP Dependency-Check non retenu (lent, clé NVD requise).
+
 ### PW-101 · Structure du monorepo · P0 · 2 pts
 *En tant que développeur, je veux une structure de repo claire afin de savoir où placer chaque élément.*
 - [ ] Dossiers `backend/`, `frontend/`, `docs/`, `infrastructure/`, `helm/`, `tests/`, `.github/`
@@ -37,7 +40,7 @@
 - [ ] Le `README.md` existant est conservé et enrichi
 
 ### PW-102 · Squelette backend Spring Boot · P0 · 5 pts
-- [ ] Projet Maven avec Wrapper, Java 25, Spring Boot 4.x (versions figées dans le `pom.xml`)
+- [ ] Projet Maven avec Wrapper, Java 25, Spring Boot 4.2.x (versions figées dans le `pom.xml`)
 - [ ] Starters : web, websocket, security, validation, actuator, data-jpa, test
 - [ ] `/actuator/health` répond `UP`
 - [ ] Gestion globale des erreurs en `ProblemDetail`

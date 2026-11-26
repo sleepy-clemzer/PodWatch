@@ -42,7 +42,7 @@ Versions vérifiées le 26/11/2026. Elles seront re-vérifiées et figées au d�
 | Technologie | Version proposée | Justification / source |
 |---|---|---|
 | Java | **25 (LTS)** | LTS en cours. Spring Boot 4.x supporte Java 17 à 26. Repli possible : Java 21 LTS. |
-| Spring Boot | **4.1.x** (dernier stable : 4.1.1, 20/08/2026) | La 4.2.0 était en RC1 en octobre 2026, GA annoncée pour novembre. À réévaluer au démarrage de la Phase 1. La branche 3.5 n'a plus de support OSS depuis le 30/06/2026 : **ne pas partir sur Spring Boot 3**. |
+| Spring Boot | **4.2.0** (sortie le 19/11/2026) | Mise à jour du 26/11/2026 : la 4.2 est sortie ; son support OSS court jusqu'à fin 2027, plus longtemps que la 4.1. La branche 3.5 n'a plus de support OSS depuis le 30/06/2026 : **ne pas partir sur Spring Boot 3**. |
 | Kubernetes Java Client (`io.kubernetes:client-java`) | **28.0.0** (29/10/2026) | Client officiel. Sa version majeure suit une version mineure de Kubernetes ; la compatibilité est garantie à n-2. **À croiser avec la version de tes clusters** (inconnue à ce stade). |
 | Maven | 3.9.x | Standard Spring Boot. Utilisation du Maven Wrapper (`mvnw`). |
 | React | **19.3.x** | 19.3.0 sortie le 09/09/2026, patch 19.3.1 le 14/10/2026. |
@@ -143,6 +143,9 @@ Détail dans `ARCHITECTURE.md`.
 Voir `ROADMAP.md` (phases et critères de sortie) et `BACKLOG.md` (user stories, priorités, estimations).
 
 ### Décisions à valider avant la Phase 1
+
+> Mise à jour du 26/11/2026 : les points 2 et 5, ainsi que le packaging, sont **tranchés** (voir `docs/adr/`). Restent ouverts : 1, 3, 4.
+
 1. **Ordre des phases** : avancer l'authentification minimale en Phase 2 (risque R1).
 2. **Client Kubernetes** : client officiel `io.kubernetes:client-java` (recommandé, conforme au prompt) ou Fabric8.
 3. **Authentification** : comptes locaux en base, ou SSO OIDC existant (Keycloak, Entra ID, Google…).

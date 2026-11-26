@@ -37,7 +37,7 @@
 - [ ] Le `README.md` existant est conservé et enrichi
 
 ### PW-102 · Squelette backend Spring Boot · P0 · 5 pts
-- [ ] Projet Maven avec Wrapper, Java 25, Spring Boot 4.x (versions figées dans le `pom.xml`)
+- [ ] Projet Maven avec Wrapper, Java 25, Spring Boot 4.2.x (versions figées dans le `pom.xml`)
 - [ ] Starters : web, websocket, security, validation, actuator, data-jpa, test
 - [ ] `/actuator/health` répond `UP`
 - [ ] Gestion globale des erreurs en `ProblemDetail`

@@ -11,7 +11,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # --- 2. Build du backend (le frontend est copié dans classpath:/static) -----------------
-FROM maven:3.9-eclipse-temurin-25 AS backend
+FROM maven:3.9-eclipse-temurin-26 AS backend
 WORKDIR /build/backend
 COPY backend/pom.xml ./
 # Couche de cache : les dépendances ne sont re-téléchargées que si pom.xml change.

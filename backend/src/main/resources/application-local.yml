@@ -1,4 +1,4 @@
-# Profil de développement local : mvn spring-boot:run -Dspring-boot.run.profiles=local
+# Profil de développement local : ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 # La base est fournie par docker-compose.yml (à la racine du repo).
 # Mot de passe de DÉVELOPPEMENT LOCAL uniquement, identique au défaut de docker-compose.yml.
 spring:

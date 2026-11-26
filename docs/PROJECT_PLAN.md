@@ -35,27 +35,22 @@ Autres ressources K8s, Prometheus et graphiques, Loki, Alertmanager, RBAC comple
 - Remplacement de Grafana : PodWatch y renvoie par des liens.
 - Installation de Prometheus/Loki/Alertmanager : PodWatch consomme l'existant.
 
-## 4. Organisation : les trois rôles IA
+## 4. Organisation : les quatre rôles IA
 
 ### 4.1 Ce qui est réel (et ce qui ne l'est pas)
 
-**Aujourd'hui, aucun agent autonome n'est configuré.** Les trois « agents » sont des **rôles** que j'endosse tour à tour, dans cette conversation ou dans une session Claude Code. Chaque rôle a un périmètre, des documents propres et un livrable attendu. Rien ne s'exécute tout seul en arrière-plan.
+Les quatre « agents » sont des **sous-agents Claude Code** définis dans le repo (`.claude/agents/`) :
+`project-manager`, `developer`, `qa-tester` et `devops` (ajouté le 26/11/2026). Chaque définition fixe le rôle, le périmètre de fichiers modifiables et les règles (par exemple : le QA ne modifie pas le code applicatif, le DevOps ne touche jamais à la PROD sans approbation).
 
-Je propose deux niveaux, au choix 🟡 :
-
-| Option | Description | Ce que ça demande |
-|---|---|---|
-| **A. Rôles explicites (par défaut)** | Je change de rôle à chaque étape du workflow et j'annonce le rôle actif (« [CHEF DE PROJET] », « [DEV] », « [QA] »). Les livrables de chaque rôle sont des fichiers distincts et des étapes PR distinctes. | Rien |
-| **B. Sous-agents Claude Code** | Trois définitions versionnées dans le repo : `.claude/agents/project-manager.md`, `developer.md`, `qa-tester.md` (prompt de rôle, outils autorisés : par exemple le QA n'a pas le droit d'écrire du code applicatif). Une session principale les invoque l'un après l'autre. | Utiliser Claude Code sur le repo. Toujours **déclenché par une session**, jamais autonome. |
-
-Dans les deux cas, **c'est toi qui valides** : merge des PR, approbation PROD, arbitrages.
+**Ils ne sont pas autonomes** : une session Claude Code (ou cette conversation) les invoque l'un après l'autre selon le workflow ci-dessous. Rien ne s'exécute seul en arrière-plan, et **c'est toi qui valides** : merge des PR, approbation PROD, arbitrages. Les règles communes sont rappelées dans `CLAUDE.md` à la racine.
 
 ### 4.2 Responsabilités
 
-| Rôle | Fait | Ne fait pas | Documents |
+| Rôle | Fait | Ne fait pas | Documents / périmètre |
 |---|---|---|---|
-| Chef de projet | User stories, priorisation, critères d'acceptation, suivi, release notes | Modifier le code applicatif | `PROJECT_PLAN.md`, `ROADMAP.md`, `BACKLOG.md`, `CHANGELOG.md` |
-| Développeur | Code backend/frontend/infra, tests unitaires, documentation du code, PR | Valider sa propre PR | Code, `README.md`, `docs/adr/` |
+| Chef de projet | User stories, priorisation, critères d'acceptation, suivi, release notes | Modifier le code ou l'infra | `PROJECT_PLAN.md`, `ROADMAP.md`, `BACKLOG.md`, `CHANGELOG.md` |
+| Développeur | Code backend/frontend, tests unitaires et d'intégration, documentation du code, PR | Valider sa propre PR, modifier la CI/CD ou le RBAC K8s | `backend/`, `frontend/`, `README.md`, `docs/adr/` |
+| **DevOps** | Docker, docker-compose, CI/CD GitHub Actions, Helm, RBAC Kubernetes de PodWatch, environnements kind/k3d, secrets, déploiements PREPROD/PROD, runbooks et rollback | Déployer ou agir sur PROD sans approbation ; utiliser `cluster-admin` ; modifier le code applicatif | `Dockerfile`, `.github/`, `helm/`, `infrastructure/`, `DEPLOYMENT.md`, `RUNBOOK.md` |
 | QA | Plan et cas de test, exécution, rapport, **refus** d'une US non conforme | Corriger le code applicatif | `TEST_PLAN.md`, `TEST_CASES.md`, `TEST_REPORT.md` |
 
 ### 4.3 Workflow par user story
@@ -63,7 +58,7 @@ Dans les deux cas, **c'est toi qui valides** : merge des PR, approbation PROD, a
 ```mermaid
 flowchart TD
   PM1[Chef de projet : US + critères d'acceptation dans BACKLOG.md] --> DEV1
-  DEV1[Dev : branche feature/PW-xxx, code + tests] --> PR[Dev : Pull Request]
+  DEV1[Dev et/ou DevOps : branche feature/PW-xxx, code / infra + tests] --> PR[Pull Request]
   PR --> CI{CI verte ?}
   CI -- non --> DEV1
   CI -- oui --> QA1[QA : exécute TEST_CASES, rédige TEST_REPORT]

@@ -4,6 +4,10 @@ Plateforme web centralisée de **supervision et d'exploitation Kubernetes** pour
 
 > Statut : **Phase 1 — Fondations** (squelette technique). Aucune connexion Kubernetes pour l'instant (Phase 2).
 > Feuille de route : [`docs/ROADMAP.md`](docs/ROADMAP.md).
+>
+> 👋 **Nouveau sur le projet ?** Commence par le guide d'installation macOS / Windows : [`docs/ONBOARDING.md`](docs/ONBOARDING.md).
+
+![Tableau de bord — Phase 1](docs/images/phase1-dashboard.png)
 
 ## Stack
 
@@ -33,7 +37,6 @@ Les dossiers `infrastructure/`, `helm/` et `tests/` seront créés avec leurs pr
 | Outil | Version | Vérification |
 |---|---|---|
 | JDK | 25 | `java -version` |
-| Maven | 3.9.x | `mvn -v` |
 | Node.js | 26 (LTS) | `node -v` |
 | Docker | récent, avec Docker Compose | `docker compose version` |
 
@@ -48,7 +51,7 @@ docker compose ps          # postgres doit être "healthy"
 ### 2. Backend (port 8080)
 ```bash
 cd backend
-mvn spring-boot:run -Dspring-boot.run.profiles=local
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local   # Windows : .\mvnw.cmd ...
 ```
 Vérifications :
 ```bash
@@ -61,7 +64,7 @@ Flyway crée le schéma au démarrage (`backend/src/main/resources/db/migration`
 ### 3. Frontend (port 5173)
 ```bash
 cd frontend
-npm install
+npm ci
 npm run dev
 ```
 Ouvrir http://localhost:5173 — le serveur Vite relaie `/api` vers le backend. Le tableau de bord affiche « Backend connecté ».
@@ -76,8 +79,8 @@ Puis http://localhost:8080 (frontend et API servis par la même image).
 
 | Commande | Contenu |
 |---|---|
-| `cd backend && mvn test` | Tests unitaires et tranches Spring (`*Test`) |
-| `cd backend && mvn verify` | + tests d'intégration Testcontainers (`*IT`, **Docker requis**) |
+| `cd backend && ./mvnw test` | Tests unitaires et tranches Spring (`*Test`) |
+| `cd backend && ./mvnw verify` | + tests d'intégration Testcontainers (`*IT`, **Docker requis**) |
 | `cd frontend && npm test` | Tests Vitest + Testing Library |
 | `cd frontend && npm run lint && npm run typecheck` | Analyse statique |
 
@@ -103,3 +106,4 @@ Aucun secret n'est versionné. En déploiement, ces valeurs proviendront de Secr
 ## Contribuer
 
 Workflow, conventions de branches et de commits, Definition of Done : [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md).
+Les quatre rôles IA (chef de projet, développeur, DevOps, QA) sont définis dans [`.claude/agents/`](.claude/agents/) ; règles communes dans [`CLAUDE.md`](CLAUDE.md).

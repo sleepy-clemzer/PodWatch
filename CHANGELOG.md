@@ -17,4 +17,7 @@ Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) — versionnem
   - `docker-compose.yml` de développement local.
   - CI GitHub Actions (build, tests, intégration Testcontainers, lint, audit npm, build et scan Trivy de l'image) ;
     actions épinglées par SHA ; Dependabot.
-  - Conventions : `CONTRIBUTING.md`, modèle de Pull Request.
+  - Conventions : `CONTRIBUTING.md`, modèle de Pull Request, `.gitattributes`.
+  - Guide d'onboarding développeur macOS (Homebrew) / Windows (winget) : `docs/ONBOARDING.md`.
+  - Quatre sous-agents Claude Code (`.claude/agents/`) : chef de projet, développeur, **DevOps**, QA ; règles communes dans `CLAUDE.md`.
+  - Maven Wrapper (`mvnw`) et `frontend/package-lock.json` versionnés (builds reproductibles).

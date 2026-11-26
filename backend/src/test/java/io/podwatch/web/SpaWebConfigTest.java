@@ -3,6 +3,7 @@ package io.podwatch.web;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import io.podwatch.security.SecurityConfig;
@@ -25,11 +26,19 @@ class SpaWebConfigTest {
     private MockMvc mockMvc;
 
     @ParameterizedTest
-    @ValueSource(strings = {"/", "/dashboard", "/pods", "/pods/prod-eu/default/my-pod"})
+    @ValueSource(strings = {"/dashboard", "/pods", "/pods/prod-eu/default/my-pod"})
     void servesIndexHtmlForSpaRoutes(String path) throws Exception {
         mockMvc.perform(get(path))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("podwatch-test-index")));
+    }
+
+    /** Sur « / », c'est la page d'accueil de Spring Boot qui fait un forward (non suivi par MockMvc). */
+    @Test
+    void rootForwardsToIndexHtml() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("index.html"));
     }
 
     @Test

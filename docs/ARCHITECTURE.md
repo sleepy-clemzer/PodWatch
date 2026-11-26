@@ -226,7 +226,7 @@ frontend/src/
 | Tests | **Vitest + Testing Library** | Natif Vite |
 | Terminal exec (plus tard) | xterm.js | Standard de fait |
 
-### 4.1 🟡 Bibliothèque UI (à choisir)
+### 4.1 ✅ Bibliothèque UI — **Ant Design** (ADR-007)
 
 | Option | + | − |
 |---|---|---|
@@ -236,7 +236,7 @@ frontend/src/
 
 **Recommandation : Ant Design**, parce que PodWatch est avant tout une console riche en tableaux.
 
-### 4.2 🟡 Bibliothèque de graphiques
+### 4.2 ✅ Bibliothèque de graphiques — **ECharts** (ADR-007)
 
 | Option | + | − |
 |---|---|---|
@@ -265,7 +265,7 @@ PodWatch/
 └── CHANGELOG.md
 ```
 
-🟡 **Packaging** : soit deux images (`podwatch-backend` et `podwatch-frontend` avec Nginx), soit **une seule image** où le build React est copié dans `static/` du jar Spring Boot. Je recommande **une seule image** : un seul déploiement, pas de CORS, cookie de session simple. Le frontend reste un projet séparé dans le repo ; il est simplement assemblé au build.
+✅ **Packaging — décidé : image unique (ADR-008).** Options étudiées : soit deux images (`podwatch-backend` et `podwatch-frontend` avec Nginx), soit **une seule image** où le build React est copié dans `static/` du jar Spring Boot. Je recommande **une seule image** : un seul déploiement, pas de CORS, cookie de session simple. Le frontend reste un projet séparé dans le repo ; il est simplement assemblé au build.
 
 ---
 
@@ -296,16 +296,16 @@ Le détail sera dans `TEST_PLAN.md`, rédigé par le rôle QA.
 
 ## 8. Décisions d'architecture à valider (ADR)
 
-| ADR | Sujet | Proposition |
+| ADR | Sujet | Proposition / décision |
 |---|---|---|
 | ADR-001 | Style | Monolithe modulaire Spring Boot |
-| ADR-002 | Client K8s | `io.kubernetes:client-java` (officiel) + informers |
+| ADR-002 | Client K8s | `io.kubernetes:client-java` (officiel) + informers — ✅ **validé** |
 | ADR-003 | Connexion multi-cluster | Backend central, SA en lecture seule par cluster, credentials en Secrets K8s |
 | ADR-004 | Temps réel | WebSocket STOMP |
 | ADR-005 | Persistance | PostgreSQL + JPA + Flyway |
 | ADR-006 | Authentification | OIDC si un IdP existe, sinon comptes locaux ; session par cookie |
-| ADR-007 | Frontend | React + TS + Vite + TanStack Query + Ant Design + ECharts |
-| ADR-008 | Packaging | Image Docker unique |
+| ADR-007 | Frontend | React + TS + Vite + TanStack Query + Ant Design + ECharts — ✅ **validé** |
+| ADR-008 | Packaging | Image Docker unique — ✅ **validé** |
 | ADR-009 | Observabilité | Catalogue de requêtes côté backend, jamais de PromQL/LogQL libre |
 
 Chaque ADR validé sera écrit dans `docs/adr/NNN-titre.md` (contexte, décision, conséquences).

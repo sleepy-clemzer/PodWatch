@@ -79,7 +79,7 @@ jobs:
           load: true
           tags: podwatch:ci-${{ github.sha }}
       - name: Scan de sécurité de l'image (Trivy)
-        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0 (version saine, cf. GHSA-69fq-xp46-6x23)
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.35.0 (version saine, cf. GHSA-69fq-xp46-6x23)
         with:
           image-ref: podwatch:ci-${{ github.sha }}
           format: table

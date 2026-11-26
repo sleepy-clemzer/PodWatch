@@ -28,6 +28,11 @@
 
 ## E1 — Fondations (Phase 1)
 
+> **Statut : IN REVIEW** (PR Phase 1). Écarts assumés, à traiter avant de clore l'epic :
+> - **PW-102** : pas encore de Maven Wrapper (`mvnw`) — l'environnement de développement assisté n'avait pas accès à Maven Central pour le générer. Action : `cd backend && mvn -N wrapper:wrapper`, puis committer. La CI utilise `mvn`.
+> - **PW-104** : `package-lock.json` non versionné (même raison). La CI le génère et le publie en artefact `frontend-package-lock` : le committer pour passer à `npm ci` (builds reproductibles).
+> - **PW-106** : analyse des dépendances = Dependabot + `npm audit` + scan Trivy de l'image (qui couvre les jars embarqués). OWASP Dependency-Check non retenu (lent, clé NVD requise).
+
 ### PW-101 · Structure du monorepo · P0 · 2 pts
 *En tant que développeur, je veux une structure de repo claire afin de savoir où placer chaque élément.*
 - [ ] Dossiers `backend/`, `frontend/`, `docs/`, `infrastructure/`, `helm/`, `tests/`, `.github/`
